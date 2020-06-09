@@ -7,6 +7,8 @@ proc i2c {} {
   add wave /i2c/sda
   add wave /i2c/scl
 
+  add wave *
+
   # clock setup
   force -deposit clk 1 0, 0 {5ps} -repeat 10
 
