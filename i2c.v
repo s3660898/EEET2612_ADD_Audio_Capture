@@ -14,8 +14,8 @@ module i2c(
   input start,
 
   /* i2c phy io related */
-  tri1 scl,
-  tri1 sda,
+  inout tri1 scl,
+  inout tri1 sda,
 
   /* status related */
   output busy
@@ -44,7 +44,7 @@ localparam [2:0]
   STATE_ADDRESS = 3'd1, /*for sending the address, write*/
   STATE_DATA_0  = 3'd2, /*for sending the first data packet*/
   STATE_DATA_1  = 3'd3, /*for sending the second data packet*/
-  STATE_END     = 3'd4; /*for the final sda/scl transition up*?
+  STATE_END     = 3'd4; /*for the final sda/scl transition up*/
 
 /*for keeping track of the current state*/
 reg [2:0] r_state;
