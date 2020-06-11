@@ -71,6 +71,12 @@ clk_50MHz_250kHz clk_50MHz_250kHz(
 
 /*pulse for i2c debugging*/
 wire pulse;
+wire i2c_busy;
+wire i2c_start;
+
+wire [6:0] address;
+wire [7:0] data_0;
+wire [7:0] data_1;
 
 single_shot ss(
   .clk(clk_250kHz),
@@ -82,13 +88,26 @@ single_shot ss(
 /*test i2c controller*/
 i2c i2c(
   .clk(clk_250kHz),
-  .start(pulse),
+  .start(i2c_start),
   .rst(sw0),
-  .cmd_address(8'b100_1100),
-  .data_0(8'b0001_0001),
-  .data_1(8'b0011_0011),
-  .sda(w_hdmi_i2c_scl),
-  .scl(w_hdmi_i2c_sda)
+  .cmd_address(address),
+  .data_0(data_0),
+  .data_1(data_1),
+  .sda(w_hdmi_i2c_sda),
+  .scl(w_hdmi_i2c_scl),
+  .busy(i2c_busy)
+);
+
+/*hdmi config queue controller*/
+hdmi_config_queue hdmi_cq(
+  .clk(clk_250kHz),
+  .rst(sw0),
+  .start(pulse),
+  .i2c_busy(i2c_busy),
+  .address(address),
+  .data_0(data_0),
+  .data_1(data_1),
+  .i2c_start(i2c_start)
 );
 
 /*general debug*/
@@ -101,7 +120,9 @@ assign gpio_00 = w_hdmi_i2c_sda;
 assign gpio_01 = w_hdmi_i2c_scl;
 
 /*hdmi i2c config*/
+/*
 assign hdmi_i2c_sda = w_hdmi_i2c_sda;
 assign hdmi_i2c_scl = w_hdmi_i2c_scl;
+*/
 
 endmodule
