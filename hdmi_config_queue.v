@@ -113,7 +113,7 @@ begin
           r_started = 0;
         end
         else
-          r_inst_count = r_inst_count + 1;
+          r_inst_count = r_inst_count + 1'b1;
       end
 
       /*internal busy management, to fix i2c_busy double shot*/

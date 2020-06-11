@@ -139,7 +139,7 @@ begin
           endcase
 
           /*incrementation*/
-          r_state_start_count = r_state_start_count + 1;
+          r_state_start_count = r_state_start_count + 1'b1;
         end
       end
 
@@ -150,7 +150,7 @@ begin
         if(r_bit_state == 3)
         begin
           r_bit_state = BIT_STATE_0;
-          r_bit_count = r_bit_count + 1;
+          r_bit_count = r_bit_count + 1'b1;
         end
 
         /*next state exit condition, transition to data state*/
@@ -174,7 +174,7 @@ begin
             BIT_STATE_2:  r_scl_pull = 1;
           endcase
 
-          r_bit_state = r_bit_state + 1;
+          r_bit_state = r_bit_state + 1'b1;
         end
       end
 
@@ -184,7 +184,7 @@ begin
         if(r_bit_state == 3)
         begin
           r_bit_state = BIT_STATE_0;
-          r_bit_count = r_bit_count + 1;
+          r_bit_count = r_bit_count + 1'b1;
         end
 
         /*next state exit condition, transition to data state*/
@@ -208,7 +208,7 @@ begin
             BIT_STATE_2:  r_scl_pull = 1;
           endcase
 
-          r_bit_state = r_bit_state + 1;
+          r_bit_state = r_bit_state + 1'b1;
         end
       end
 
@@ -218,7 +218,7 @@ begin
         if(r_bit_state == 3)
         begin
           r_bit_state = BIT_STATE_0;
-          r_bit_count = r_bit_count + 1;
+          r_bit_count = r_bit_count + 1'b1;
         end
 
         /*next state exit condition, transition to data state*/
@@ -243,7 +243,7 @@ begin
             BIT_STATE_2:  r_scl_pull = 1;
           endcase
 
-          r_bit_state = r_bit_state + 1;
+          r_bit_state = r_bit_state + 1'b1;
         end
       end
 
@@ -278,7 +278,7 @@ begin
             end
           endcase
 
-          r_state_end_count = r_state_end_count + 1;
+          r_state_end_count = r_state_end_count + 1'b1;
 
         end
       end

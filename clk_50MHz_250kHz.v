@@ -15,7 +15,7 @@ begin
     r_clk = !r_clk;
   end
   else
-    r_count = r_count + 1;
+    r_count = r_count + 1'b1;
 end
 
 assign clk_250kHz = r_clk;
