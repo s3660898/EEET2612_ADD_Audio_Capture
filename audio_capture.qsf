@@ -66,10 +66,10 @@ set_location_assignment PIN_D8 -to gpio_04
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to gpio_04
 set_location_assignment PIN_Y24 -to sw0
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sw0
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_00
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to gpio_01
 set_location_assignment PIN_AH17 -to key0
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to key0
-set_instance_assignment -name SLEW_RATE 1 -to gpio_00
-set_instance_assignment -name SLEW_RATE 1 -to gpio_01
 set_location_assignment PIN_AE8 -to hdmi_tx_d[23]
 set_location_assignment PIN_AF9 -to hdmi_tx_d[22]
 set_location_assignment PIN_AG6 -to hdmi_tx_d[21]

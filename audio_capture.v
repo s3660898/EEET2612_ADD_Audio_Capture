@@ -65,6 +65,7 @@ wire w_hdmi_i2c_scl,
 
 /*clock divider*/
 clk_50MHz_250kHz clk_50MHz_250kHz(
+  .rst(sw0),
   .clk_50MHz(clk_50MHz),
   .clk_250kHz(clk_250kHz)
 );
@@ -122,13 +123,13 @@ hdmi_signal hdmi_s(
 );
 
 /*general debug*/
-assign gpio_00 = 1'bz;
-assign gpio_01 = 1'bz;
 assign gpio_02 = clk_250kHz;
 assign gpio_03 = 1'b0;
 assign gpio_04 = 1'b0;
 
 /*for debugging the i2c signals*/
+assign gpio_00 = 1'b0;
+assign gpio_01 = 1'b0;
 /*
 assign gpio_00 = w_hdmi_i2c_sda;
 assign gpio_01 = w_hdmi_i2c_scl;

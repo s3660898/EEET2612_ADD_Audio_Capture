@@ -8,27 +8,23 @@ proc audio_capture {} {
   #add wave *
 
   # clock setup
-  force -deposit clk_50MHz 1 0, 0 {10ns} -repeat 20ns
+  force -deposit clk_250kHz 1 0, 0 {5ps} -repeat 10
 
   # inputs init
   force key0 1
 
   # reset init
   force sw0 1
-  run 40ns
+  run 10
   force sw0 0
-  run 40ns
-
+  run 50
 
   # starting
-  run 8us
   force key0 0
-  run 8us
+  run 20
   force key0 1
 
-  # add wave /audio_capture/clk_50MHz_250kHz/*
-  add wave /audio_capture/hdmi_s/*
 
   # to see all of the i2c signal being sent
-  run 1ms
+  run 25000
 }
