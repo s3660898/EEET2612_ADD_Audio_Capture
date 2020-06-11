@@ -110,6 +110,17 @@ hdmi_config_queue hdmi_cq(
   .i2c_start(i2c_start)
 );
 
+/*hdmi output signal generator*/
+hdmi_signal hdmi_s(
+  .clk(clk_50MHz),
+  .rst(sw0),
+  .data(hdmi_tx_d),
+  .h_sync(hdmi_tx_hs),
+  .v_sync(hdmi_tx_vs),
+  .clk_out(hdmi_tx_clk),
+  .data_en(hdmi_tx_de)
+);
+
 /*general debug*/
 assign gpio_00 = 1'bz;
 assign gpio_01 = 1'bz;
