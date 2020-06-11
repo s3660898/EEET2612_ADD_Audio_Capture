@@ -29,6 +29,7 @@ reg       r_i2c_start;
 
 /*firing control registers*/
 reg r_started;
+reg r_internal_busy;
 
 always @(posedge(clk))
 begin
@@ -39,6 +40,9 @@ begin
     r_i2c_start = 0;
     r_started  = 0;
     r_inst_count = 5'b0;
+    r_internal_busy = 0;
+    r_data_0 = 8'b0;
+    r_data_1 = 8'b0;
 
     /*instruction set values*/
     inst[ 0][0] = 8'h01; inst[ 0][1] = 8'h00;  /*set N value 6144*/
@@ -91,8 +95,11 @@ begin
       *   tell i2c to send instructions
       *   increment instruction counter
       */
-      if(!i2c_busy)
+      if(!i2c_busy && !r_internal_busy)
       begin
+        /*i2c_busy double shot bugfix*/
+        r_internal_busy = 1;
+        
         /*update internal instruction registers*/
         r_data_0 = inst[r_inst_count][0];
         r_data_1 = inst[r_inst_count][1];
@@ -108,6 +115,11 @@ begin
         else
           r_inst_count = r_inst_count + 1;
       end
+
+      /*internal busy management, to fix i2c_busy double shot*/
+      else if(r_internal_busy)
+        r_internal_busy = 0;
+
     end
   end
 
