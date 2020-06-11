@@ -125,7 +125,7 @@ begin
 
 end
 
-assign address = 6'h72;
+assign address = 7'h72;
 assign data_0  = r_data_0;
 assign data_1  = r_data_1;
 assign i2c_start = r_i2c_start;

@@ -24,4 +24,7 @@ proc audio_capture {} {
   run 20
   force key0 1
 
+
+  # to see all of the i2c signal being sent
+  run 25000
 }
