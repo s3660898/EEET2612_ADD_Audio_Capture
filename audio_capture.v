@@ -39,8 +39,8 @@ module audio_capture(
   input clk_50MHz,
   input sw0,
   input key0,
-  output gpio_00, /*sda*/
-  output gpio_01, /*scl*/
+  inout tri1 gpio_00, /*sda*/
+  inout tri1 gpio_01, /*scl*/
   output gpio_02, /*clk_250kHz*/
   output gpio_03, /*gnd*/
   output gpio_04, /*gnd*/
@@ -53,8 +53,8 @@ module audio_capture(
   output        hdmi_tx_vs,   /*vertical sync*/
 
   /*hdmi control output*/
-  output hdmi_i2c_sda,        /*hdmi config i2c sda*/
-  output hdmi_i2c_scl         /*hdmi config i2c scl*/
+  inout tri1 hdmi_i2c_sda,        /*hdmi config i2c sda*/
+  inout tri1 hdmi_i2c_scl         /*hdmi config i2c scl*/
 );
 
 wire clk_250kHz;
@@ -111,18 +111,20 @@ hdmi_config_queue hdmi_cq(
 );
 
 /*general debug*/
+assign gpio_00 = 1'bz;
+assign gpio_01 = 1'bz;
 assign gpio_02 = clk_250kHz;
 assign gpio_03 = 1'b0;
 assign gpio_04 = 1'b0;
 
 /*for debugging the i2c signals*/
+/*
 assign gpio_00 = w_hdmi_i2c_sda;
 assign gpio_01 = w_hdmi_i2c_scl;
+*/
 
 /*hdmi i2c config*/
-/*
 assign hdmi_i2c_sda = w_hdmi_i2c_sda;
 assign hdmi_i2c_scl = w_hdmi_i2c_scl;
-*/
 
 endmodule
