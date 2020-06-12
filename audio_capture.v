@@ -54,7 +54,7 @@ module audio_capture(
 
   /*hdmi control output*/
   inout tri1 hdmi_i2c_sda,        /*hdmi config i2c sda*/
-  inout tri1 hdmi_i2c_scl         /*hdmi config i2c scl*/
+  output hdmi_i2c_scl         /*hdmi config i2c scl*/
 );
 
 wire clk_250kHz;

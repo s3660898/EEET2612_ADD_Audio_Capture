@@ -126,8 +126,6 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hdmi_tx_clk
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hdmi_tx_de
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hdmi_tx_hs
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hdmi_tx_vs
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to hdmi_i2c_scl
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to hdmi_i2c_sda
 set_location_assignment PIN_AG5 -to hdmi_tx_clk
 set_location_assignment PIN_AD19 -to hdmi_tx_de
 set_location_assignment PIN_T8 -to hdmi_tx_hs
