@@ -6,7 +6,7 @@ module clk_div_frame(
 );
 
 /*to allow for different values in testing*/
-reg [15:0]r_count;
+reg [23:0]r_count;
 reg r_clk;
 
 always @(posedge(clk_in))

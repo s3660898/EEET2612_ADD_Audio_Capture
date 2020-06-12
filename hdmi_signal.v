@@ -2,6 +2,9 @@ module hdmi_signal(
   input clk,
   input rst,
 
+  /*frame selection*/
+  input [1:0] frame_select,
+
   /*hdmi output*/
   output [23:0] data,
   output h_sync,
@@ -12,11 +15,11 @@ module hdmi_signal(
 );
 
 /*2 16x16 sprites*/
-parameter NONE    = 23'h000000;
-parameter RED     = 23'hb13425;
-parameter YELLOW  = 23'he39d25;
-parameter BROWN   = 23'h6a6b04;
-reg [23:0] img[1:0][15:0][15:0];
+parameter NONE    = 24'h000000;
+parameter RED     = 24'hb13425;
+parameter YELLOW  = 24'he39d25;
+parameter BROWN   = 24'h6a6b04;
+reg [23:0] img[3:0][15:0][15:0];
 
 /*1080p configuration settings*/
 parameter V_TOTAL          = 12'd1125;
@@ -404,16 +407,16 @@ begin
     img[1][ 4][ 0] = NONE;
     img[1][ 4][ 1] = NONE;
     img[1][ 4][ 2] = NONE;
-    img[1][ 4][ 3] = NONE;
-    img[1][ 4][ 4] = BROWN;
+    img[1][ 4][ 3] = BROWN;
+    img[1][ 4][ 4] = YELLOW;
     img[1][ 4][ 5] = BROWN;
-    img[1][ 4][ 6] = BROWN;
+    img[1][ 4][ 6] = YELLOW;
     img[1][ 4][ 7] = YELLOW;
     img[1][ 4][ 8] = YELLOW;
     img[1][ 4][ 9] = BROWN;
     img[1][ 4][10] = YELLOW;
-    img[1][ 4][11] = NONE;
-    img[1][ 4][12] = NONE;
+    img[1][ 4][11] = YELLOW;
+    img[1][ 4][12] = YELLOW;
     img[1][ 4][13] = NONE;
     img[1][ 4][14] = NONE;
     img[1][ 4][15] = NONE;
@@ -605,6 +608,550 @@ begin
     img[1][15][14] = NONE;
     img[1][15][15] = NONE;
 
+    img[2][ 0][ 0] = NONE;
+    img[2][ 0][ 1] = NONE;
+    img[2][ 0][ 2] = NONE;
+    img[2][ 0][ 3] = NONE;
+    img[2][ 0][ 4] = NONE;
+    img[2][ 0][ 5] = RED;
+    img[2][ 0][ 6] = RED;
+    img[2][ 0][ 7] = RED;
+    img[2][ 0][ 8] = RED;
+    img[2][ 0][ 9] = RED;
+    img[2][ 0][10] = NONE;
+    img[2][ 0][11] = NONE;
+    img[2][ 0][12] = NONE;
+    img[2][ 0][13] = NONE;
+    img[2][ 0][14] = NONE;
+    img[2][ 0][15] = NONE;
+
+    img[2][ 1][ 0] = NONE;
+    img[2][ 1][ 1] = NONE;
+    img[2][ 1][ 2] = NONE;
+    img[2][ 1][ 3] = NONE;
+    img[2][ 1][ 4] = RED;
+    img[2][ 1][ 5] = RED;
+    img[2][ 1][ 6] = RED;
+    img[2][ 1][ 7] = RED;
+    img[2][ 1][ 8] = RED;
+    img[2][ 1][ 9] = RED;
+    img[2][ 1][10] = RED;
+    img[2][ 1][11] = RED;
+    img[2][ 1][12] = RED;
+    img[2][ 1][13] = NONE;
+    img[2][ 1][14] = NONE;
+    img[2][ 1][15] = NONE;
+
+    img[2][ 2][ 0] = NONE;
+    img[2][ 2][ 1] = NONE;
+    img[2][ 2][ 2] = NONE;
+    img[2][ 2][ 3] = NONE;
+    img[2][ 2][ 4] = BROWN;
+    img[2][ 2][ 5] = BROWN;
+    img[2][ 2][ 6] = BROWN;
+    img[2][ 2][ 7] = YELLOW;
+    img[2][ 2][ 8] = YELLOW;
+    img[2][ 2][ 9] = BROWN;
+    img[2][ 2][10] = YELLOW;
+    img[2][ 2][11] = NONE;
+    img[2][ 2][12] = NONE;
+    img[2][ 2][13] = NONE;
+    img[2][ 2][14] = NONE;
+    img[2][ 2][15] = NONE;
+
+    img[2][ 3][ 0] = NONE;
+    img[2][ 3][ 1] = NONE;
+    img[2][ 3][ 2] = NONE;
+    img[2][ 3][ 3] = BROWN;
+    img[2][ 3][ 4] = YELLOW;
+    img[2][ 3][ 5] = BROWN;
+    img[2][ 3][ 6] = YELLOW;
+    img[2][ 3][ 7] = YELLOW;
+    img[2][ 3][ 8] = YELLOW;
+    img[2][ 3][ 9] = BROWN;
+    img[2][ 3][10] = YELLOW;
+    img[2][ 3][11] = YELLOW;
+    img[2][ 3][12] = YELLOW;
+    img[2][ 3][13] = NONE;
+    img[2][ 3][14] = NONE;
+    img[2][ 3][15] = NONE;
+
+    img[2][ 4][ 0] = NONE;
+    img[2][ 4][ 1] = NONE;
+    img[2][ 4][ 2] = NONE;
+    img[2][ 4][ 3] = BROWN;
+    img[2][ 4][ 4] = YELLOW;
+    img[2][ 4][ 5] = BROWN;
+    img[2][ 4][ 6] = BROWN;
+    img[2][ 4][ 7] = YELLOW;
+    img[2][ 4][ 8] = YELLOW;
+    img[2][ 4][ 9] = YELLOW;
+    img[2][ 4][10] = BROWN;
+    img[2][ 4][11] = YELLOW;
+    img[2][ 4][12] = YELLOW;
+    img[2][ 4][13] = YELLOW;
+    img[2][ 4][14] = NONE;
+    img[2][ 4][15] = NONE;
+
+    img[2][ 5][ 0] = NONE;
+    img[2][ 5][ 1] = NONE;
+    img[2][ 5][ 2] = NONE;
+    img[2][ 5][ 3] = BROWN;
+    img[2][ 5][ 4] = BROWN;
+    img[2][ 5][ 5] = YELLOW;
+    img[2][ 5][ 6] = YELLOW;
+    img[2][ 5][ 7] = YELLOW;
+    img[2][ 5][ 8] = YELLOW;
+    img[2][ 5][ 9] = BROWN;
+    img[2][ 5][10] = BROWN;
+    img[2][ 5][11] = BROWN;
+    img[2][ 5][12] = BROWN;
+    img[2][ 5][13] = NONE;
+    img[2][ 5][14] = NONE;
+    img[2][ 5][15] = NONE;
+
+    img[2][ 6][ 0] = NONE;
+    img[2][ 6][ 1] = NONE;
+    img[2][ 6][ 2] = NONE;
+    img[2][ 6][ 3] = NONE;
+    img[2][ 6][ 4] = NONE;
+    img[2][ 6][ 5] = YELLOW;
+    img[2][ 6][ 6] = YELLOW;
+    img[2][ 6][ 7] = YELLOW;
+    img[2][ 6][ 8] = YELLOW;
+    img[2][ 6][ 9] = YELLOW;
+    img[2][ 6][10] = YELLOW;
+    img[2][ 6][11] = YELLOW;
+    img[2][ 6][12] = NONE;
+    img[2][ 6][13] = NONE;
+    img[2][ 6][14] = NONE;
+    img[2][ 6][15] = NONE;
+
+    img[2][ 7][ 0] = NONE;
+    img[2][ 7][ 1] = NONE;
+    img[2][ 7][ 2] = NONE;
+    img[2][ 7][ 3] = NONE;
+    img[2][ 7][ 4] = BROWN;
+    img[2][ 7][ 5] = BROWN;
+    img[2][ 7][ 6] = RED;
+    img[2][ 7][ 7] = BROWN;
+    img[2][ 7][ 8] = BROWN;
+    img[2][ 7][ 9] = BROWN;
+    img[2][ 7][10] = NONE;
+    img[2][ 7][11] = NONE;
+    img[2][ 7][12] = NONE;
+    img[2][ 7][13] = NONE;
+    img[2][ 7][14] = NONE;
+    img[2][ 7][15] = NONE;
+
+    img[2][ 8][ 0] = NONE;
+    img[2][ 8][ 1] = NONE;
+    img[2][ 8][ 2] = NONE;
+    img[2][ 8][ 3] = BROWN;
+    img[2][ 8][ 4] = BROWN;
+    img[2][ 8][ 5] = BROWN;
+    img[2][ 8][ 6] = BROWN;
+    img[2][ 8][ 7] = RED;
+    img[2][ 8][ 8] = RED;
+    img[2][ 8][ 9] = BROWN;
+    img[2][ 8][10] = BROWN;
+    img[2][ 8][11] = NONE;
+    img[2][ 8][12] = NONE;
+    img[2][ 8][13] = NONE;
+    img[2][ 8][14] = NONE;
+    img[2][ 8][15] = NONE;
+
+    img[2][ 9][ 0] = NONE;
+    img[2][ 9][ 1] = NONE;
+    img[2][ 9][ 2] = NONE;
+    img[2][ 9][ 3] = BROWN;
+    img[2][ 9][ 4] = BROWN;
+    img[2][ 9][ 5] = BROWN;
+    img[2][ 9][ 6] = RED;
+    img[2][ 9][ 7] = RED;
+    img[2][ 9][ 8] = YELLOW;
+    img[2][ 9][ 9] = RED;
+    img[2][ 9][10] = RED;
+    img[2][ 9][11] = YELLOW;
+    img[2][ 9][12] = NONE;
+    img[2][ 9][13] = NONE;
+    img[2][ 9][14] = NONE;
+    img[2][ 9][15] = NONE;
+
+    img[2][10][ 0] = NONE;
+    img[2][10][ 1] = NONE;
+    img[2][10][ 2] = NONE;
+    img[2][10][ 3] = BROWN;
+    img[2][10][ 4] = BROWN;
+    img[2][10][ 5] = BROWN;
+    img[2][10][ 6] = BROWN;
+    img[2][10][ 7] = RED;
+    img[2][10][ 8] = RED;
+    img[2][10][ 9] = RED;
+    img[2][10][10] = RED;
+    img[2][10][11] = RED;
+    img[2][10][12] = NONE;
+    img[2][10][13] = NONE;
+    img[2][10][14] = NONE;
+    img[2][10][15] = NONE;
+
+    img[2][11][ 0] = NONE;
+    img[2][11][ 1] = NONE;
+    img[2][11][ 2] = NONE;
+    img[2][11][ 3] = RED;
+    img[2][11][ 4] = BROWN;
+    img[2][11][ 5] = BROWN;
+    img[2][11][ 6] = YELLOW;
+    img[2][11][ 7] = YELLOW;
+    img[2][11][ 8] = YELLOW;
+    img[2][11][ 9] = RED;
+    img[2][11][10] = RED;
+    img[2][11][11] = RED;
+    img[2][11][12] = NONE;
+    img[2][11][13] = NONE;
+    img[2][11][14] = NONE;
+    img[2][11][15] = NONE;
+
+    img[2][12][ 0] = NONE;
+    img[2][12][ 1] = NONE;
+    img[2][12][ 2] = NONE;
+    img[2][12][ 3] = NONE;
+    img[2][12][ 4] = RED;
+    img[2][12][ 5] = BROWN;
+    img[2][12][ 6] = YELLOW;
+    img[2][12][ 7] = YELLOW;
+    img[2][12][ 8] = RED;
+    img[2][12][ 9] = RED;
+    img[2][12][10] = RED;
+    img[2][12][11] = NONE;
+    img[2][12][12] = NONE;
+    img[2][12][13] = NONE;
+    img[2][12][14] = NONE;
+    img[2][12][15] = NONE;
+
+    img[2][13][ 0] = NONE;
+    img[2][13][ 1] = NONE;
+    img[2][13][ 2] = NONE;
+    img[2][13][ 3] = NONE;
+    img[2][13][ 4] = NONE;
+    img[2][13][ 5] = RED;
+    img[2][13][ 6] = RED;
+    img[2][13][ 7] = RED;
+    img[2][13][ 8] = BROWN;
+    img[2][13][ 9] = BROWN;
+    img[2][13][10] = BROWN;
+    img[2][13][11] = NONE;
+    img[2][13][12] = NONE;
+    img[2][13][13] = NONE;
+    img[2][13][14] = NONE;
+    img[2][13][15] = NONE;
+
+    img[2][14][ 0] = NONE;
+    img[2][14][ 1] = NONE;
+    img[2][14][ 2] = NONE;
+    img[2][14][ 3] = NONE;
+    img[2][14][ 4] = NONE;
+    img[2][14][ 5] = BROWN;
+    img[2][14][ 6] = BROWN;
+    img[2][14][ 7] = BROWN;
+    img[2][14][ 8] = BROWN;
+    img[2][14][ 9] = BROWN;
+    img[2][14][10] = BROWN;
+    img[2][14][11] = BROWN;
+    img[2][14][12] = NONE;
+    img[2][14][13] = NONE;
+    img[2][14][14] = NONE;
+    img[2][14][15] = NONE;
+
+    img[2][15][ 0] = NONE;
+    img[2][15][ 1] = NONE;
+    img[2][15][ 2] = NONE;
+    img[2][15][ 3] = NONE;
+    img[2][15][ 4] = NONE;
+    img[2][15][ 5] = BROWN;
+    img[2][15][ 6] = BROWN;
+    img[2][15][ 7] = BROWN;
+    img[2][15][ 8] = BROWN;
+    img[2][15][ 9] = NONE;
+    img[2][15][10] = NONE;
+    img[2][15][11] = NONE;
+    img[2][15][12] = NONE;
+    img[2][15][13] = NONE;
+    img[2][15][14] = NONE;
+    img[2][15][15] = NONE;
+
+    img[3][ 0][ 0] = NONE;
+    img[3][ 0][ 1] = NONE;
+    img[3][ 0][ 2] = NONE;
+    img[3][ 0][ 3] = NONE;
+    img[3][ 0][ 4] = NONE;
+    img[3][ 0][ 5] = RED;
+    img[3][ 0][ 6] = RED;
+    img[3][ 0][ 7] = RED;
+    img[3][ 0][ 8] = RED;
+    img[3][ 0][ 9] = RED;
+    img[3][ 0][10] = NONE;
+    img[3][ 0][11] = NONE;
+    img[3][ 0][12] = NONE;
+    img[3][ 0][13] = NONE;
+    img[3][ 0][14] = NONE;
+    img[3][ 0][15] = NONE;
+
+    img[3][ 1][ 0] = NONE;
+    img[3][ 1][ 1] = NONE;
+    img[3][ 1][ 2] = NONE;
+    img[3][ 1][ 3] = NONE;
+    img[3][ 1][ 4] = RED;
+    img[3][ 1][ 5] = RED;
+    img[3][ 1][ 6] = RED;
+    img[3][ 1][ 7] = RED;
+    img[3][ 1][ 8] = RED;
+    img[3][ 1][ 9] = RED;
+    img[3][ 1][10] = RED;
+    img[3][ 1][11] = RED;
+    img[3][ 1][12] = RED;
+    img[3][ 1][13] = NONE;
+    img[3][ 1][14] = NONE;
+    img[3][ 1][15] = NONE;
+
+    img[3][ 2][ 0] = NONE;
+    img[3][ 2][ 1] = NONE;
+    img[3][ 2][ 2] = NONE;
+    img[3][ 2][ 3] = NONE;
+    img[3][ 2][ 4] = BROWN;
+    img[3][ 2][ 5] = BROWN;
+    img[3][ 2][ 6] = BROWN;
+    img[3][ 2][ 7] = YELLOW;
+    img[3][ 2][ 8] = YELLOW;
+    img[3][ 2][ 9] = BROWN;
+    img[3][ 2][10] = YELLOW;
+    img[3][ 2][11] = NONE;
+    img[3][ 2][12] = NONE;
+    img[3][ 2][13] = NONE;
+    img[3][ 2][14] = NONE;
+    img[3][ 2][15] = NONE;
+
+    img[3][ 3][ 0] = NONE;
+    img[3][ 3][ 1] = NONE;
+    img[3][ 3][ 2] = NONE;
+    img[3][ 3][ 3] = BROWN;
+    img[3][ 3][ 4] = YELLOW;
+    img[3][ 3][ 5] = BROWN;
+    img[3][ 3][ 6] = YELLOW;
+    img[3][ 3][ 7] = YELLOW;
+    img[3][ 3][ 8] = YELLOW;
+    img[3][ 3][ 9] = BROWN;
+    img[3][ 3][10] = YELLOW;
+    img[3][ 3][11] = YELLOW;
+    img[3][ 3][12] = YELLOW;
+    img[3][ 3][13] = NONE;
+    img[3][ 3][14] = NONE;
+    img[3][ 3][15] = NONE;
+
+    img[3][ 4][ 0] = NONE;
+    img[3][ 4][ 1] = NONE;
+    img[3][ 4][ 2] = NONE;
+    img[3][ 4][ 3] = BROWN;
+    img[3][ 4][ 4] = YELLOW;
+    img[3][ 4][ 5] = BROWN;
+    img[3][ 4][ 6] = BROWN;
+    img[3][ 4][ 7] = YELLOW;
+    img[3][ 4][ 8] = YELLOW;
+    img[3][ 4][ 9] = YELLOW;
+    img[3][ 4][10] = BROWN;
+    img[3][ 4][11] = YELLOW;
+    img[3][ 4][12] = YELLOW;
+    img[3][ 4][13] = YELLOW;
+    img[3][ 4][14] = NONE;
+    img[3][ 4][15] = NONE;
+
+    img[3][ 5][ 0] = NONE;
+    img[3][ 5][ 1] = NONE;
+    img[3][ 5][ 2] = NONE;
+    img[3][ 5][ 3] = BROWN;
+    img[3][ 5][ 4] = BROWN;
+    img[3][ 5][ 5] = YELLOW;
+    img[3][ 5][ 6] = YELLOW;
+    img[3][ 5][ 7] = YELLOW;
+    img[3][ 5][ 8] = YELLOW;
+    img[3][ 5][ 9] = BROWN;
+    img[3][ 5][10] = BROWN;
+    img[3][ 5][11] = BROWN;
+    img[3][ 5][12] = BROWN;
+    img[3][ 5][13] = NONE;
+    img[3][ 5][14] = NONE;
+    img[3][ 5][15] = NONE;
+
+    img[3][ 6][ 0] = NONE;
+    img[3][ 6][ 1] = NONE;
+    img[3][ 6][ 2] = NONE;
+    img[3][ 6][ 3] = NONE;
+    img[3][ 6][ 4] = NONE;
+    img[3][ 6][ 5] = YELLOW;
+    img[3][ 6][ 6] = YELLOW;
+    img[3][ 6][ 7] = YELLOW;
+    img[3][ 6][ 8] = YELLOW;
+    img[3][ 6][ 9] = YELLOW;
+    img[3][ 6][10] = YELLOW;
+    img[3][ 6][11] = YELLOW;
+    img[3][ 6][12] = NONE;
+    img[3][ 6][13] = NONE;
+    img[3][ 6][14] = NONE;
+    img[3][ 6][15] = NONE;
+
+    img[3][ 7][ 0] = NONE;
+    img[3][ 7][ 1] = NONE;
+    img[3][ 7][ 2] = BROWN;
+    img[3][ 7][ 3] = BROWN;
+    img[3][ 7][ 4] = BROWN;
+    img[3][ 7][ 5] = BROWN;
+    img[3][ 7][ 6] = RED;
+    img[3][ 7][ 7] = RED;
+    img[3][ 7][ 8] = BROWN;
+    img[3][ 7][ 9] = BROWN;
+    img[3][ 7][10] = NONE;
+    img[3][ 7][11] = NONE;
+    img[3][ 7][12] = NONE;
+    img[3][ 7][13] = NONE;
+    img[3][ 7][14] = NONE;
+    img[3][ 7][15] = NONE;
+
+    img[3][ 8][ 0] = YELLOW;
+    img[3][ 8][ 1] = YELLOW;
+    img[3][ 8][ 2] = BROWN;
+    img[3][ 8][ 3] = BROWN;
+    img[3][ 8][ 4] = BROWN;
+    img[3][ 8][ 5] = BROWN;
+    img[3][ 8][ 6] = RED;
+    img[3][ 8][ 7] = RED;
+    img[3][ 8][ 8] = RED;
+    img[3][ 8][ 9] = BROWN;
+    img[3][ 8][10] = BROWN;
+    img[3][ 8][11] = BROWN;
+    img[3][ 8][12] = YELLOW;
+    img[3][ 8][13] = YELLOW;
+    img[3][ 8][14] = YELLOW;
+    img[3][ 8][15] = NONE;
+
+    img[3][ 9][ 0] = YELLOW;
+    img[3][ 9][ 1] = YELLOW;
+    img[3][ 9][ 2] = YELLOW;
+    img[3][ 9][ 3] = NONE;
+    img[3][ 9][ 4] = BROWN;
+    img[3][ 9][ 5] = BROWN;
+    img[3][ 9][ 6] = RED;
+    img[3][ 9][ 7] = YELLOW;
+    img[3][ 9][ 8] = RED;
+    img[3][ 9][ 9] = RED;
+    img[3][ 9][10] = RED;
+    img[3][ 9][11] = BROWN;
+    img[3][ 9][12] = BROWN;
+    img[3][ 9][13] = YELLOW;
+    img[3][ 9][14] = YELLOW;
+    img[3][ 9][15] = NONE;
+
+    img[3][10][ 0] = YELLOW;
+    img[3][10][ 1] = YELLOW;
+    img[3][10][ 2] = NONE;
+    img[3][10][ 3] = NONE;
+    img[3][10][ 4] = RED;
+    img[3][10][ 5] = RED;
+    img[3][10][ 6] = RED;
+    img[3][10][ 7] = RED;
+    img[3][10][ 8] = RED;
+    img[3][10][ 9] = RED;
+    img[3][10][10] = RED;
+    img[3][10][11] = NONE;
+    img[3][10][12] = NONE;
+    img[3][10][13] = BROWN;
+    img[3][10][14] = NONE;
+    img[3][10][15] = NONE;
+
+    img[3][11][ 0] = NONE;
+    img[3][11][ 1] = NONE;
+    img[3][11][ 2] = NONE;
+    img[3][11][ 3] = RED;
+    img[3][11][ 4] = RED;
+    img[3][11][ 5] = RED;
+    img[3][11][ 6] = RED;
+    img[3][11][ 7] = RED;
+    img[3][11][ 8] = RED;
+    img[3][11][ 9] = RED;
+    img[3][11][10] = RED;
+    img[3][11][11] = RED;
+    img[3][11][12] = BROWN;
+    img[3][11][13] = BROWN;
+    img[3][11][14] = NONE;
+    img[3][11][15] = NONE;
+
+    img[3][12][ 0] = NONE;
+    img[3][12][ 1] = NONE;
+    img[3][12][ 2] = RED;
+    img[3][12][ 3] = RED;
+    img[3][12][ 4] = RED;
+    img[3][12][ 5] = RED;
+    img[3][12][ 6] = RED;
+    img[3][12][ 7] = RED;
+    img[3][12][ 8] = RED;
+    img[3][12][ 9] = RED;
+    img[3][12][10] = RED;
+    img[3][12][11] = RED;
+    img[3][12][12] = BROWN;
+    img[3][12][13] = BROWN;
+    img[3][12][14] = NONE;
+    img[3][12][15] = NONE;
+
+    img[3][13][ 0] = NONE;
+    img[3][13][ 1] = BROWN;
+    img[3][13][ 2] = BROWN;
+    img[3][13][ 3] = RED;
+    img[3][13][ 4] = RED;
+    img[3][13][ 5] = RED;
+    img[3][13][ 6] = NONE;
+    img[3][13][ 7] = NONE;
+    img[3][13][ 8] = NONE;
+    img[3][13][ 9] = RED;
+    img[3][13][10] = RED;
+    img[3][13][11] = RED;
+    img[3][13][12] = BROWN;
+    img[3][13][13] = BROWN;
+    img[3][13][14] = NONE;
+    img[3][13][15] = NONE;
+
+    img[3][14][ 0] = NONE;
+    img[3][14][ 1] = BROWN;
+    img[3][14][ 2] = BROWN;
+    img[3][14][ 3] = BROWN;
+    img[3][14][ 4] = NONE;
+    img[3][14][ 5] = NONE;
+    img[3][14][ 6] = NONE;
+    img[3][14][ 7] = NONE;
+    img[3][14][ 8] = NONE;
+    img[3][14][ 9] = NONE;
+    img[3][14][10] = NONE;
+    img[3][14][11] = NONE;
+    img[3][14][12] = NONE;
+    img[3][14][13] = NONE;
+    img[3][14][14] = NONE;
+    img[3][14][15] = NONE;
+
+    img[3][15][ 0] = NONE;
+    img[3][15][ 1] = NONE;
+    img[3][15][ 2] = BROWN;
+    img[3][15][ 3] = BROWN;
+    img[3][15][ 4] = BROWN;
+    img[3][15][ 5] = NONE;
+    img[3][15][ 6] = NONE;
+    img[3][15][ 7] = NONE;
+    img[3][15][ 8] = NONE;
+    img[3][15][ 9] = NONE;
+    img[3][15][10] = NONE;
+    img[3][15][11] = NONE;
+    img[3][15][12] = NONE;
+    img[3][15][13] = NONE;
+    img[3][15][14] = NONE;
+    img[3][15][15] = NONE;
+
   end
 
   /*running logic*/
@@ -618,9 +1165,9 @@ begin
       r_px_y = r_v_count - (V_SYNC_DURATION + V_BACK_PORCH);
 
       /*img with 4x scale*/
-      r_r = img[1][r_px_y>>2][r_px_x>>2][23:16];
-      r_g = img[1][r_px_y>>2][r_px_x>>2][15: 8];
-      r_b = img[1][r_px_y>>2][r_px_x>>2][ 7: 0];
+      r_r = img[frame_select][r_px_y>>2][r_px_x>>2][23:16];
+      r_g = img[frame_select][r_px_y>>2][r_px_x>>2][15: 8];
+      r_b = img[frame_select][r_px_y>>2][r_px_x>>2][ 7: 0];
 
       r_data[23:16] = r_r;
       r_data[15: 8] = r_g;
@@ -658,7 +1205,7 @@ begin
   end
 end
 
-assign clk_out = !clk;
+assign clk_out = clk;
 /*
 assign data = 24'b_0000_0000__0000_0000__1111_1111;
 */
