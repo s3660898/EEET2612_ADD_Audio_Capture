@@ -47,6 +47,8 @@ reg r_data_en;
 reg [11:0] r_px_x;
 reg [11:0] r_px_y;
 
+reg [1:0] r_frame_select;
+
 always @(posedge(clk))
 begin
 
@@ -1152,6 +1154,10 @@ begin
     img[3][15][14] = NONE;
     img[3][15][15] = NONE;
 
+    r_frame_select = 0;
+    r_r = 0;
+    r_g = 0;
+    r_b = 0;
   end
 
   /*running logic*/
@@ -1160,20 +1166,25 @@ begin
 
     if(r_data_en)
     begin
+
+      r_frame_select = frame_select;
+
       /*x and y pixel coordinates*/
       r_px_x = r_h_count - (H_SYNC_DURATION + H_BACK_PORCH);
       r_px_y = r_v_count - (V_SYNC_DURATION + V_BACK_PORCH);
 
       /*img with 4x scale*/
-      r_r = img[frame_select][r_px_y>>2][r_px_x>>2][23:16];
-      r_g = img[frame_select][r_px_y>>2][r_px_x>>2][15: 8];
-      r_b = img[frame_select][r_px_y>>2][r_px_x>>2][ 7: 0];
+      if(r_frame_select == 0)
+        r_frame_select = 2'd2;
+
+      r_r = img[r_frame_select][r_px_y>>2][r_px_x>>2][23:16];
+      r_g = img[r_frame_select][r_px_y>>2][r_px_x>>2][15: 8];
+      r_b = img[r_frame_select][r_px_y>>2][r_px_x>>2][ 7: 0];
 
       r_data[23:16] = r_r;
       r_data[15: 8] = r_g;
       r_data[ 7: 0] = r_b;
     end
-
 
     /*updating h & v sync, data enable*/
     r_h_sync = (r_h_count < H_SYNC_DURATION);
