@@ -55,6 +55,13 @@
 ## tbd
 
 !*.tcl
+!*.qip
+!*.ppf
+!*.spd
+!*.sip
+
+!pll_hdmi_clk
+!pll_hdmi_clk_sim
 !sim
 
 # End of https://www.gitignore.io/api/alteraquartusii

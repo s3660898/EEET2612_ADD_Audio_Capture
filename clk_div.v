@@ -1,13 +1,15 @@
-module clk_50MHz_250kHz(
+/*50Mhz in, ~60kHz out for i2c*/
+module clk_div(
   input rst,
-  input clk_50MHz,
-  output clk_250kHz
+  input clk_in,
+  output clk_out
 );
 
-reg [7:0]r_count;
+/*to allow for different values in testing*/
+reg [15:0]r_count;
 reg r_clk;
 
-always @(posedge(clk_50MHz))
+always @(posedge(clk_in))
 begin
   if(rst)
   begin
@@ -17,7 +19,7 @@ begin
   else
   begin
 
-    if(r_count == 99)
+    if(r_count == 415)
     begin
       r_count = 8'b0;
       r_clk = !r_clk;
@@ -28,6 +30,6 @@ begin
   end
 end
 
-assign clk_250kHz = r_clk;
+assign clk_out = r_clk;
 
 endmodule

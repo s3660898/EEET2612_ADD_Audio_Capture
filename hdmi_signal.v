@@ -12,15 +12,15 @@ module hdmi_signal(
 );
 
 /*1080p configuration settings*/
-parameter V_TOTAL          = 12'd750;
-parameter V_FRONT_PORCH    = 12'd5;
-parameter V_BACK_PORCH     = 12'd20;
+parameter V_TOTAL          = 12'd1125;
+parameter V_FRONT_PORCH    = 12'd4;
+parameter V_BACK_PORCH     = 12'd36;
 parameter V_SYNC_DURATION  = 12'd5;
 
-parameter H_TOTAL          = 12'd1650;
-parameter H_FRONT_PORCH    = 12'd110;
-parameter H_BACK_PORCH     = 12'd220;
-parameter H_SYNC_DURATION  = 12'd40;
+parameter H_TOTAL          = 12'd2200;
+parameter H_FRONT_PORCH    = 12'd88;
+parameter H_BACK_PORCH     = 12'd148;
+parameter H_SYNC_DURATION  = 12'd44;
 
 reg [11:0] r_h_count;
 reg [11:0] r_v_count;

@@ -15,15 +15,15 @@ proc audio_capture {} {
 
   # reset init
   force sw0 1
-  run 40ns
+  run 20us
   force sw0 0
-  run 40ns
+  run 20us
 
 
   # starting
-  run 8us
+  run 20us
   force key0 0
-  run 8us
+  run 20us
   force key0 1
 
   # add wave /audio_capture/clk_50MHz_250kHz/*
