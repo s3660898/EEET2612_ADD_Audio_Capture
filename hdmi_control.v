@@ -114,7 +114,7 @@ end
 assign px_x = r_px_x;
 assign px_y = r_px_y;
 
-assign clk_out = !clk;
+assign clk_out = clk;
 assign data = r_data;
 assign h_sync = r_h_sync;
 assign v_sync = r_v_sync;

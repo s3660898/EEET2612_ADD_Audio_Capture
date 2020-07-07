@@ -2,6 +2,7 @@ module audio_capture(
   input clk_50MHz,
   input sw0,
   input key0,
+  input key1,
   inout gpio_00, /*sda*/
   inout gpio_01, /*scl*/
   output gpio_02, /*clk_60kHz*/
@@ -50,7 +51,7 @@ wire [7:0] data_1;
 single_shot ss(
   .clk(clk_60kHz),
   .rst(sw0),
-  .start(!key0),
+  .start(!sw0),
   .q(pulse)
 );
 
@@ -78,6 +79,38 @@ hdmi_config_queue hdmi_cq(
   .data_1(data_1),
   .i2c_start(i2c_start)
 );
+
+
+/*key single shots*/
+wire pulse_key0;
+wire pulse_key1;
+single_shot ss_key0(
+  .clk(clk_50MHz),
+  .rst(sw0),
+  .start(!key0),
+  .q(pulse_key0)
+);
+
+single_shot ss_key1(
+  .clk(clk_50MHz),
+  .rst(sw0),
+  .start(!key1),
+  .q(pulse_key1)
+);
+
+/*channel selection counter*/
+wire [1:0] channel_selected;
+counter #(
+  .MAX(4),
+  .MAX_BITWIDTH(2)
+)channel_counter(
+  .clk(clk_50MHz),
+  .rst(sw0),
+  .increment(pulse_key0),
+  .decrement(pulse_key1),
+  .count(channel_selected)
+);
+
 
 /*hdmi presignal controller*/
 wire hdmi_c_clk_out;
@@ -113,6 +146,8 @@ hdmi_pixel_colour hdmi_pc(
   .px_x(hdmi_c_px_x),
   .data_en(hdmi_c_data_en),
 
+  .channel_select(channel_selected),
+
   .r(hdmi_pc_r),
   .g(hdmi_pc_g),
   .b(hdmi_pc_b)
@@ -139,6 +174,7 @@ hdmi_signal hdmi_s(
   .data_en(hdmi_tx_de),
   .data(hdmi_tx_d)
 );
+
 
 /*general debug*/
 assign gpio_02 = clk_60kHz;

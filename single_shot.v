@@ -12,7 +12,7 @@ always @(posedge(clk))
 begin
   if(rst)
   begin
-    can_fire = 0;
+    can_fire = 1;
     r_q = 0;
   end
   else
