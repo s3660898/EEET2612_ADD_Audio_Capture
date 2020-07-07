@@ -128,9 +128,8 @@ set_location_assignment PIN_AG5 -to hdmi_tx_clk
 set_location_assignment PIN_AD19 -to hdmi_tx_de
 set_location_assignment PIN_T8 -to hdmi_tx_hs
 set_location_assignment PIN_V13 -to hdmi_tx_vs
+set_global_assignment -name VERILOG_FILE hdmi_control.v
 set_global_assignment -name VERILOG_FILE single_shot.v
-set_global_assignment -name VERILOG_FILE counter_frame.v
-set_global_assignment -name VERILOG_FILE clk_div_frame.v
 set_global_assignment -name VERILOG_FILE clk_div.v
 set_global_assignment -name VERILOG_FILE hdmi_signal.v
 set_global_assignment -name VERILOG_FILE hdmi_config_queue.v

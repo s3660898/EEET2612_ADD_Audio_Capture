@@ -79,16 +79,42 @@ hdmi_config_queue hdmi_cq(
   .i2c_start(i2c_start)
 );
 
-/*hdmi output signal generator*/
-hdmi_signal hdmi_s(
+/*hdmi presignal controller*/
+wire hdmi_c_clk_out;
+wire hdmi_c_h_sync;
+wire hdmi_c_v_sync;
+wire hdmi_c_data_en;
+
+hdmi_control hdmi_c(
   .clk(clk_hdmi),
   .rst(sw0),
 
-  .data(hdmi_tx_d),
+  .clk_out(hdmi_c_clk_out),
+  .h_sync(hdmi_c_h_sync),
+  .v_sync(hdmi_c_v_sync),
+  .data_en(hdmi_c_data_en)
+);
+
+/*hdmi output signal generator*/
+hdmi_signal hdmi_s(
+  .clk(hdmi_c_clk_out),
+  .rst(sw0),
+
+  /*inputs*/
+  .r(8'd150),
+  .g(8'd200),
+  .b(8'd200),
+
+  .in_h_sync(hdmi_c_h_sync),
+  .in_v_sync(hdmi_c_v_sync),
+  .in_data_en(hdmi_c_data_en),
+
+  /*output*/
   .h_sync(hdmi_tx_hs),
   .v_sync(hdmi_tx_vs),
   .clk_out(hdmi_tx_clk),
-  .data_en(hdmi_tx_de)
+  .data_en(hdmi_tx_de),
+  .data(hdmi_tx_d)
 );
 
 /*general debug*/
