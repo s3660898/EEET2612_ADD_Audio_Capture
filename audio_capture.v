@@ -84,15 +84,38 @@ wire hdmi_c_clk_out;
 wire hdmi_c_h_sync;
 wire hdmi_c_v_sync;
 wire hdmi_c_data_en;
+wire [11:0] hdmi_c_px_y;
+wire [11:0] hdmi_c_px_x;
 
 hdmi_control hdmi_c(
   .clk(clk_hdmi),
   .rst(sw0),
 
+  .px_y(hdmi_c_px_y),
+  .px_x(hdmi_c_px_x),
+  .data_en(hdmi_c_data_en),
+
   .clk_out(hdmi_c_clk_out),
   .h_sync(hdmi_c_h_sync),
-  .v_sync(hdmi_c_v_sync),
-  .data_en(hdmi_c_data_en)
+  .v_sync(hdmi_c_v_sync)
+);
+
+/*hdmi per-pixel colour controller*/
+wire [7:0] hdmi_pc_r;
+wire [7:0] hdmi_pc_g;
+wire [7:0] hdmi_pc_b;
+
+hdmi_pixel_colour hdmi_pc(
+  .clk(hdmi_c_clk_out),
+  .rst(sw0),
+
+  .px_y(hdmi_c_px_y),
+  .px_x(hdmi_c_px_x),
+  .data_en(hdmi_c_data_en),
+
+  .r(hdmi_pc_r),
+  .g(hdmi_pc_g),
+  .b(hdmi_pc_b)
 );
 
 /*hdmi output signal generator*/
@@ -101,9 +124,9 @@ hdmi_signal hdmi_s(
   .rst(sw0),
 
   /*inputs*/
-  .r(8'd150),
-  .g(8'd200),
-  .b(8'd200),
+  .r(hdmi_pc_r),
+  .g(hdmi_pc_g),
+  .b(hdmi_pc_b),
 
   .in_h_sync(hdmi_c_h_sync),
   .in_v_sync(hdmi_c_v_sync),
