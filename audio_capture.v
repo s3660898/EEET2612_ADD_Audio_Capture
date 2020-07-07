@@ -38,22 +38,6 @@ clk_div clk_d(
   .clk_out(clk_60kHz)
 );
 
-/*50MHz -> 2Hz clock divider for frame counter*/
-wire clk_frame;
-clk_div_frame clk_df(
-  .rst(sw0),
-  .clk_in(clk_50MHz),
-  .clk_out(clk_frame)
-);
-
-/*frame counter*/
-wire [1:0] frame_select;
-counter_frame counter_f(
-  .rst(sw0),
-  .clk(clk_frame),
-  .frame_select(frame_select)
-);
-
 /*pulse for i2c debugging*/
 wire pulse;
 wire i2c_busy;
@@ -99,8 +83,6 @@ hdmi_config_queue hdmi_cq(
 hdmi_signal hdmi_s(
   .clk(clk_hdmi),
   .rst(sw0),
-
-  .frame_select(frame_select),
 
   .data(hdmi_tx_d),
   .h_sync(hdmi_tx_hs),
