@@ -10,8 +10,10 @@ module hdmi_pixel_colour(
   input data_en,
   
   /*'custom' input*/
-  input [1:0] channel_select,
+  input [1:0]  channel_select,
+  input [11:0] val,
 
+  /*pixel colour output*/
   output [7:0] r,
   output [7:0] g,
   output [7:0] b
@@ -20,6 +22,8 @@ module hdmi_pixel_colour(
 reg [7:0] r_r;
 reg [7:0] r_g;
 reg [7:0] r_b;
+
+reg [11:0] val_shifted;
 
 function text_is_white;
   input [11:0] px_y;
@@ -182,6 +186,7 @@ begin
     r_r = 0;
     r_g = 0;
     r_b = 0;
+    val_shifted = 0;
   end
   else
   begin
@@ -200,35 +205,50 @@ begin
       end
       else
       begin
-        case(channel_select)
-          2'd0:
-          begin
-            r_r = 8'd200;
-            r_g = 8'd110;
-            r_b = 8'd60;
-          end
+        /*shifting val to from 12 to 11 bit, 2048-0 to 1024-0 range*/
+        if(px_y == 0)
+          val_shifted = val >> 1;
 
-          2'd1:
-          begin
-            r_r = 8'd120;
-            r_g = 8'd200;
-            r_b = 8'd100;
-          end
 
-          2'd2:
-          begin
-            r_r = 8'd50;
-            r_g = 8'd180;
-            r_b = 8'd200;
-          end
+        if(px_y < val_shifted)
+        begin
+          case(channel_select)
+            2'd0:
+            begin
+              r_r = 8'd200;
+              r_g = 8'd110;
+              r_b = 8'd60;
+            end
 
-          2'd3:
-          begin
-            r_r = 8'd100;
-            r_g = 8'd100;
-            r_b = 8'd100;
-          end
-        endcase
+            2'd1:
+            begin
+              r_r = 8'd120;
+              r_g = 8'd200;
+              r_b = 8'd100;
+            end
+
+            2'd2:
+            begin
+              r_r = 8'd50;
+              r_g = 8'd180;
+              r_b = 8'd200;
+            end
+
+            2'd3:
+            begin
+              r_r = 8'd100;
+              r_g = 8'd100;
+              r_b = 8'd100;
+            end
+          endcase
+        end
+        else
+        begin
+          r_r = 8'd200;
+          r_g = 8'd200;
+          r_b = 8'd200;
+        end
+
       end
     end
   end

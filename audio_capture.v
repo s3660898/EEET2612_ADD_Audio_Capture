@@ -18,7 +18,13 @@ module audio_capture(
 
   /*hdmi control output*/
   inout tri1 hdmi_i2c_sda,        /*hdmi config i2c sda*/
-  inout tri1 hdmi_i2c_scl         /*hdmi config i2c scl*/
+  inout tri1 hdmi_i2c_scl,        /*hdmi config i2c scl*/
+
+  /*adc related*/
+  input  adc_sdo,
+  output adc_convst,
+  output adc_sck,
+  output adc_sdi
 );
 
 wire clk_hdmi;
@@ -111,6 +117,30 @@ counter #(
   .count(channel_selected)
 );
 
+/*adc controller*/
+wire w_adc_convst;
+wire w_adc_sck;
+wire w_adc_sdi;
+wire w_adc_sdo;
+
+wire [11:0] val;
+
+adc_controller adc_c(
+  .clk(clk_50MHz),
+  .rst(sw0),
+
+  .adc_conv(w_adc_convst),
+  .adc_sck(w_adc_sck),
+  .adc_sdi(w_adc_sdi),
+  .adc_sdo(w_adc_sdo),
+
+  .val(val)
+);
+
+assign w_adc_sdo = adc_sdo;
+assign adc_convst = w_adc_convst;
+assign adc_sdi = w_adc_sdi;
+assign adc_sck = w_adc_sck;
 
 /*hdmi presignal controller*/
 wire hdmi_c_clk_out;
@@ -147,6 +177,7 @@ hdmi_pixel_colour hdmi_pc(
   .data_en(hdmi_c_data_en),
 
   .channel_select(channel_selected),
+  .val(val),
 
   .r(hdmi_pc_r),
   .g(hdmi_pc_g),
