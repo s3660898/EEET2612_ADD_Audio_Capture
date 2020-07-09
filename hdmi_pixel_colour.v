@@ -205,12 +205,22 @@ begin
       end
       else
       begin
-        /*shifting val to from 12 to 11 bit, 2048-0 to 1024-0 range*/
+        /* shifting val to from 12 to 11 bit, 2048-0 to 1024-0 range,
+        *  though only once a frame, and removing neg values*/
         if(px_y == 0)
-          val_shifted = val >> 1;
+        begin
+          if(val < 11'd1024)
+            val_shifted = val >> 1;
+          else
+          begin
+            val_shifted = -val;
+            val_shifted = val_shifted >> 1;
+          end
+
+        end
 
 
-        if(px_y < val_shifted)
+        if(1080 - px_y > val_shifted)
         begin
           case(channel_select)
             2'd0:
